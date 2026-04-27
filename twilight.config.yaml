@@ -122,9 +122,9 @@ site:
     # 加载页配置
     loadingOverlay:
         # 是否启用加载页
-        enable: flase
+        enable: true
         # 是否等待所有资源 (如图片、样式表) 加载完成
-        waitForAllResources: true
+        waitForAllResources: false
         # 加载标题配置
         title:
             # 是否启用加载标题
@@ -421,7 +421,7 @@ musicPlayer:
                 # 时长
                 duration: 146
     # 是否自动播放
-    autoplay: true
+    autoplay: false
 
 # 看板娘配置
 pio:
