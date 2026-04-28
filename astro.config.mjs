@@ -59,7 +59,7 @@ export default defineConfig({
         decapCmsOauth({
             configPath: "./.decap.yml", // Path to the Decap CMS configuration file
             decapCMSVersion: "3.9.0",
-            enable: true, // Set to true to use oauth true(Requires .env configuration)
+            enable: true, // Set to true to use oauth (Requires .env configuration)
         }),
         swup({
             theme: false,

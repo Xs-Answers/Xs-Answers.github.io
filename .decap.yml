@@ -1,10 +1,10 @@
 # 后台系统配置
 backend:
     name: github
-    repo: https://github.com/Xs-Answers/Xs-Answers.github.io
+    repo: Xs-Answers/Xs-Answers.github.io
     branch: main # 请替换为您的分支名称
-    site_domain: xs-answers.github.io
-    base_url: https://xs-answers.github.io
+    site_domain: xs-answers-github-io.pages.dev
+    base_url: https://xs-answers-github-io.pages.dev
     auth_endpoint: oauth # OAuth 路由由集成提供
 
 
