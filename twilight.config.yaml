@@ -400,7 +400,7 @@ musicPlayer:
         # 类型 ("playlist" 歌单 | "song" 单曲)
         type: "playlist"
         # 资源 ID
-        id: "2161912966"
+        id: "2842480424"
     # local 模式专属配置
     local:
         # 播放列表
