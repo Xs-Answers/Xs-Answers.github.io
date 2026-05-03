@@ -1,0 +1,253 @@
+---
+title: 测试公式
+published: 2026-05-03T17:26:00.000+08:00
+tags: []
+category: []
+draft: false
+---
+# 二元正态分布的详细推导
+
+## 一、联合密度函数的推导
+
+### 1.1 协方差矩阵的基本性质
+
+给定：
+$$
+X = \begin{bmatrix} X_1 \\ X_2 \end{bmatrix} \sim N_2(\mu, \Sigma)
+$$
+
+其中：
+$$
+\mu = \begin{bmatrix} \mu_1 \\ \mu_2 \end{bmatrix}, \quad
+\Sigma = \begin{bmatrix} \sigma_{11} & \sigma_{12} \\ \sigma_{21} & \sigma_{22} \end{bmatrix} = \begin{bmatrix} \sigma_1^2 & \rho\sigma_1\sigma_2 \\ \rho\sigma_1\sigma_2 & \sigma_2^2 \end{bmatrix} > 0
+$$
+
+**注记**：$\Sigma > 0$ 表示 $\Sigma$ 是正定矩阵。
+
+### 1.2 计算协方差矩阵的行列式
+
+$$
+|\Sigma| = \det(\Sigma) = \begin{vmatrix} \sigma_1^2 & \rho\sigma_1\sigma_2 \\ \rho\sigma_1\sigma_2 & \sigma_2^2 \end{vmatrix} = \sigma_1^2 \cdot \sigma_2^2 - (\rho\sigma_1\sigma_2)^2 = \sigma_1^2\sigma_2^2(1 - \rho^2)
+$$
+
+由于 $\Sigma > 0$（正定），故 $|\Sigma| > 0$，即：
+$$\sigma_1^2\sigma_2^2(1 - \rho^2) > 0 \implies 1 - \rho^2 > 0 \implies |\rho| < 1$$
+
+### 1.3 计算协方差矩阵的逆矩阵
+
+对于 $2 \times 2$ 矩阵 $A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$，其逆矩阵为：
+$$A^{-1} = \frac{1}{ad - bc} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$$
+
+伴随矩阵求逆
+
+应用到 $\Sigma$ 上：
+$$\Sigma^{-1} = \frac{1}{|\Sigma|} \begin{bmatrix} \sigma_2^2 & -\rho\sigma_1\sigma_2 \\ -\rho\sigma_1\sigma_2 & \sigma_1^2 \end{bmatrix} = \frac{1}{\sigma_1^2\sigma_2^2(1 - \rho^2)} \begin{bmatrix} \sigma_2^2 & -\rho\sigma_1\sigma_2 \\ -\rho\sigma_1\sigma_2 & \sigma_1^2 \end{bmatrix}$$
+
+化简得：
+$$\Sigma^{-1} = \frac{1}{1 - \rho^2} \begin{bmatrix} \frac{1}{\sigma_1^2} & -\frac{\rho}{\sigma_1\sigma_2} \\ -\frac{\rho}{\sigma_1\sigma_2} & \frac{1}{\sigma_2^2} \end{bmatrix}$$
+
+### 1.4 二次型的展开
+
+令 $x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$，则：
+$$x - \mu = \begin{bmatrix} x_1 - \mu_1 \\ x_2 - \mu_2 \end{bmatrix}$$
+
+计算二次型 $(x - \mu)'\Sigma^{-1}(x - \mu)$：
+
+$$\begin{aligned}
+(x - \mu)'\Sigma^{-1}(x - \mu) &= \begin{bmatrix} x_1 - \mu_1 & x_2 - \mu_2 \end{bmatrix} \cdot \frac{1}{1 - \rho^2} \begin{bmatrix} \frac{1}{\sigma_1^2} & -\frac{\rho}{\sigma_1\sigma_2} \\ -\frac{\rho}{\sigma_1\sigma_2} & \frac{1}{\sigma_2^2} \end{bmatrix} \cdot \begin{bmatrix} x_1 - \mu_1 \\ x_2 - \mu_2 \end{bmatrix} \\
+&= \frac{1}{1 - \rho^2} \begin{bmatrix} x_1 - \mu_1 & x_2 - \mu_2 \end{bmatrix} \cdot \begin{bmatrix} \frac{x_1 - \mu_1}{\sigma_1^2} - \frac{\rho(x_2 - \mu_2)}{\sigma_1\sigma_2} \\ -\frac{\rho(x_1 - \mu_1)}{\sigma_1\sigma_2} + \frac{x_2 - \mu_2}{\sigma_2^2} \end{bmatrix} \\
+&= \frac{1}{1 - \rho^2} \left[ (x_1 - \mu_1)\left(\frac{x_1 - \mu_1}{\sigma_1^2} - \frac{\rho(x_2 - \mu_2)}{\sigma_1\sigma_2}\right) + (x_2 - \mu_2)\left(-\frac{\rho(x_1 - \mu_1)}{\sigma_1\sigma_2} + \frac{x_2 - \mu_2}{\sigma_2^2}\right) \right] \\
+&= \frac{1}{1 - \rho^2} \left[ \frac{(x_1 - \mu_1)^2}{\sigma_1^2} - \frac{\rho(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} - \frac{\rho(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2} \right] \\
+&= \frac{1}{1 - \rho^2} \left[ \frac{(x_1 - \mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2} \right]
+\end{aligned}$$
+
+### 1.5 联合密度函数
+
+根据多元正态分布的密度函数公式：
+$$f(x) = \frac{1}{(2\pi)^{p/2}|\Sigma|^{1/2}} \exp\left[-\frac{1}{2}(x - \mu)'\Sigma^{-1}(x - \mu)\right]$$
+
+对于 $p = 2$，有：
+$$(2\pi)^{p/2} = (2\pi)^{2/2} = 2\pi$$
+$$|\Sigma|^{1/2} = \sqrt{\sigma_1^2\sigma_2^2(1 - \rho^2)} = \sigma_1\sigma_2\sqrt{1 - \rho^2}$$
+
+因此，联合密度函数为：
+$$f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp\left[-\frac{1}{2(1 - \rho^2)}\left(\frac{(x_1 - \mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2}\right)\right]$$
+
+---
+
+## 二、边缘密度函数的推导
+
+### 2.1 $X_1$ 的边缘密度函数
+
+边缘密度函数 $f_{X_1}(x_1)$ 通过对 $x_2$ 积分得到：
+$$f_{X_1}(x_1) = \int_{-\infty}^{+\infty} f(x_1, x_2) dx_2$$
+
+将联合密度函数代入：
+$$f_{X_1}(x_1) = \int_{-\infty}^{+\infty} \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp\left[-\frac{1}{2(1 - \rho^2)}\left(\frac{(x_1 - \mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2}\right)\right] dx_2$$
+
+### 2.2 完成平方
+
+将指数中的表达式关于 $x_2$ 完成平方：
+
+令 $A = \frac{1}{2(1 - \rho^2)}$，则指数部分为：
+$$\begin{aligned}
+&-\frac{A}{\sigma_2^2}(x_2 - \mu_2)^2 + \frac{2A\rho(x_1 - \mu_1)}{\sigma_1\sigma_2}(x_2 - \mu_2) - \frac{A(x_1 - \mu_1)^2}{\sigma_1^2} \\
+&= -\frac{A}{\sigma_2^2}\left[(x_2 - \mu_2)^2 - 2\rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}(x_2 - \mu_2)\right] - \frac{A(x_1 - \mu_1)^2}{\sigma_1^2} \\
+&= -\frac{A}{\sigma_2^2}\left[(x_2 - \mu_2)^2 - 2\rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}(x_2 - \mu_2) + \rho^2\frac{\sigma_2^2(x_1 - \mu_1)^2}{\sigma_1^2} - \rho^2\frac{\sigma_2^2(x_1 - \mu_1)^2}{\sigma_1^2}\right] - \frac{A(x_1 - \mu_1)^2}{\sigma_1^2} \\
+&= -\frac{A}{\sigma_2^2}\left[(x_2 - \mu_2) - \rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}\right]^2 + \frac{A\rho^2(x_1 - \mu_1)^2}{\sigma_1^2} - \frac{A(x_1 - \mu_1)^2}{\sigma_1^2} \\
+&= -\frac{A}{\sigma_2^2}\left[(x_2 - \mu_2) - \rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}\right]^2 - \frac{A(1 - \rho^2)(x_1 - \mu_1)^2}{\sigma_1^2}
+\end{aligned}$$
+
+### 2.3 积分计算
+
+代入 $A = \frac{1}{2(1 - \rho^2)}$：
+$$\begin{aligned}
+f_{X_1}(x_1) &= \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp\left[-\frac{1}{2}\cdot\frac{(x_1 - \mu_1)^2}{\sigma_1^2}\right] \\
+&\quad \times \int_{-\infty}^{+\infty} \exp\left[-\frac{1}{2(1 - \rho^2)\sigma_2^2}\left((x_2 - \mu_2) - \rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}\right)^2\right] dx_2
+\end{aligned}$$
+
+令 $y = (x_2 - \mu_2) - \rho\frac{\sigma_2(x_1 - \mu_1)}{\sigma_1}$，则 $dy = dx_2$，积分变为：
+$$\int_{-\infty}^{+\infty} \exp\left[-\frac{y^2}{2(1 - \rho^2)\sigma_2^2}\right] dy$$
+
+这是一个高斯积分，其值为：
+$$\int_{-\infty}^{+\infty} e^{-y^2/(2\sigma^2)} dy = \sigma\sqrt{2\pi}$$
+
+这里 $\sigma^2 = (1 - \rho^2)\sigma_2^2$，所以：
+$$\int_{-\infty}^{+\infty} \exp\left[-\frac{y^2}{2(1 - \rho^2)\sigma_2^2}\right] dy = \sigma_2\sqrt{2\pi(1 - \rho^2)}$$
+
+### 2.4 最终结果
+
+代入得：
+$$\begin{aligned}
+f_{X_1}(x_1) &= \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp\left[-\frac{1}{2}\cdot\frac{(x_1 - \mu_1)^2}{\sigma_1^2}\right] \cdot \sigma_2\sqrt{2\pi(1 - \rho^2)} \\
+&= \frac{1}{\sqrt{2\pi}\sigma_1} \exp\left[-\frac{1}{2}\cdot\frac{(x_1 - \mu_1)^2}{\sigma_1^2}\right]
+\end{aligned}$$
+
+因此，$X_1$ 的边缘密度函数为：
+$$f_{X_1}(x_1) = \frac{1}{\sqrt{2\pi}\sigma_1} \exp\left[-\frac{(x_1 - \mu_1)^2}{2\sigma_1^2}\right]$$
+
+即 $X_1 \sim N(\mu_1, \sigma_1^2)$。
+
+### 2.5 $X_2$ 的边缘密度函数
+
+同理，$X_2$ 的边缘密度函数为：
+$$f_{X_2}(x_2) = \frac{1}{\sqrt{2\pi}\sigma_2} \exp\left[-\frac{(x_2 - \mu_2)^2}{2\sigma_2^2}\right]$$
+
+即 $X_2 \sim N(\mu_2, \sigma_2^2)$。
+
+---
+
+## 三、相关系数 $\rho$ 的统计意义
+
+### 3.1 相关系数的定义
+
+相关系数 $\rho$ 定义为：
+$$\rho = \frac{\text{Cov}(X_1, X_2)}{\sqrt{\text{Var}(X_1)\text{Var}(X_2)}} = \frac{\sigma_{12}}{\sigma_1\sigma_2}$$
+
+其中：
+
+- $\text{Cov}(X_1, X_2) = \sigma_{12} = \rho\sigma_1\sigma_2$ 是 $X_1$ 和 $X_2$ 的协方差
+- $\text{Var}(X_1) = \sigma_1^2$，$\text{Var}(X_2) = \sigma_2^2$ 分别是 $X_1$ 和 $X_2$ 的方差
+
+### 3.2 $\rho$ 的取值范围
+
+由柯西-施瓦茨不等式：
+$$|\text{Cov}(X_1, X_2)| \leq \sqrt{\text{Var}(X_1)\text{Var}(X_2)}$$
+
+因此：
+$$|\rho| \leq 1$$
+
+在非退化情况下（$\Sigma > 0$），有 $|\rho| < 1$。
+
+### 3.3 $\rho$ 的几何解释
+
+#### 3.3.1 线性相关程度
+
+$\rho$ 衡量了 $X_1$ 和 $X_2$ 之间的线性相关程度：
+
+- $\rho = 1$：$X_1$ 和 $X_2$ 完全正相关，存在 $a > 0$ 使得 $X_2 = aX_1 + b$ 几乎必然成立
+- $\rho = -1$：$X_1$ 和 $X_2$ 完全负相关，存在 $a < 0$ 使得 $X_2 = aX_1 + b$ 几乎必然成立
+- $\rho = 0$：$X_1$ 和 $X_2$ 不相关（在正态分布下等价于独立）
+
+#### 3.3.2 联合密度函数的等高线
+
+联合密度函数的等高线由方程：
+$$\frac{(x_1 - \mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2} = \text{常数}$$
+
+定义，这是一个椭圆方程。$\rho$ 决定了椭圆的形状和方向：
+
+- $|\rho| \to 1$：椭圆变得越来越扁，趋向于一条直线
+- $\rho = 0$：椭圆退化为圆（当 $\sigma_1 = \sigma_2$ 时）或轴对齐的椭圆
+
+### 3.4 $\rho$ 与条件分布的关系
+
+#### 3.4.1 条件期望
+
+给定 $X_1 = x_1$，$X_2$ 的条件期望为：
+$$E[X_2 | X_1 = x_1] = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)$$
+
+这是一条关于 $x_1$ 的直线，斜率为 $\rho\frac{\sigma_2}{\sigma_1}$。
+
+#### 3.4.2 条件方差
+
+给定 $X_1 = x_1$，$X_2$ 的条件方差为：
+$$\text{Var}(X_2 | X_1 = x_1) = \sigma_2^2(1 - \rho^2)$$
+
+这说明：
+
+- $|\rho| \to 1$：条件方差 $\to 0$，即 $X_2$ 几乎完全由 $X_1$ 决定
+- $\rho = 0$：条件方差 $= \sigma_2^2$，即 $X_2$ 与 $X_1$ 无关
+
+### 3.5 $\rho$ 的统计推断
+
+#### 3.5.1 样本相关系数
+
+给定样本 $(x_{1i}, x_{2i})$，$i = 1, 2, \dots, n$，样本相关系数为：
+$$r = \frac{\sum_{i=1}^n (x_{1i} - \bar{x}_1)(x_{2i} - \bar{x}_2)}{\sqrt{\sum_{i=1}^n (x_{1i} - \bar{x}_1)^2 \sum_{i=1}^n (x_{2i} - \bar{x}_2)^2}}$$
+
+#### 3.5.2 假设检验
+
+检验 $H_0: \rho = 0$ vs $H_1: \rho \neq 0$：
+
+在 $H_0$ 下，统计量：
+$$t = r\sqrt{\frac{n-2}{1-r^2}} \sim t(n-2)$$
+
+### 3.6 $\rho$ 的实际意义
+
+#### 3.6.1 预测能力
+
+$\rho^2$（决定系数）表示 $X_1$ 能够解释 $X_2$ 变异的比例：
+$$\rho^2 = 1 - \frac{\text{Var}(X_2 | X_1)}{\text{Var}(X_2)}$$
+
+#### 3.6.2 风险分散
+
+在投资组合理论中，$\rho$ 决定了资产组合的风险分散效果：
+
+- $\rho = 1$：无法分散风险
+- $\rho = -1$：可以完全对冲风险
+- $\rho = 0$：可以部分分散风险
+
+---
+
+## 四、总结
+
+### 4.1 联合密度函数
+
+$$f(x_1, x_2) = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1 - \rho^2}} \exp\left[-\frac{1}{2(1 - \rho^2)}\left(\frac{(x_1 - \mu_1)^2}{\sigma_1^2} - 2\rho\frac{(x_1 - \mu_1)(x_2 - \mu_2)}{\sigma_1\sigma_2} + \frac{(x_2 - \mu_2)^2}{\sigma_2^2}\right)\right]$$
+
+### 4.2 边缘密度函数
+
+$$f_{X_1}(x_1) = \frac{1}{\sqrt{2\pi}\sigma_1} \exp\left[-\frac{(x_1 - \mu_1)^2}{2\sigma_1^2}\right], \quad X_1 \sim N(\mu_1, \sigma_1^2)$$
+
+$$f_{X_2}(x_2) = \frac{1}{\sqrt{2\pi}\sigma_2} \exp\left[-\frac{(x_2 - \mu_2)^2}{2\sigma_2^2}\right], \quad X_2 \sim N(\mu_2, \sigma_2^2)$$
+
+### 4.3 $\rho$ 的统计意义
+
+1. **定义**：$\rho = \frac{\text{Cov}(X_1, X_2)}{\sigma_1\sigma_2}$
+2. **取值范围**：$|\rho| < 1$（非退化情况）
+3. **线性相关程度**：衡量 $X_1$ 和 $X_2$ 之间的线性相关程度
+4. **条件分布**：
+   - $E[X_2 | X_1 = x_1] = \mu_2 + \rho\frac{\sigma_2}{\sigma_1}(x_1 - \mu_1)$
+   - $\text{Var}(X_2 | X_1 = x_1) = \sigma_2^2(1 - \rho^2)$
+5. **决定系数**：$\rho^2$ 表示解释比例
+6. **几何意义**：决定联合密度函数等高线的形状和方向
