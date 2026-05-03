@@ -171,24 +171,6 @@ navbar:
             "Home"
         - # 一级导航链接 - 归档 (预设)
             "Archive"
-        - # 一级导航链接 - 学习 (自定义)
-            name: "学习"
-            url: "/study/"
-            icon: "material-symbols:school"
-            description: "学习笔记与课程整理"
-            children:
-                - name: "多元统计分析"
-                  url: "/archive/?category=%E5%AD%A6%E4%B9%A0%20%2F%20%E5%A4%9A%E5%85%83%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90"
-                  icon: "material-symbols:query-stats"
-                  description: "多元统计分析相关笔记"
-                - name: "机器学习"
-                  url: "/archive/?category=%E5%AD%A6%E4%B9%A0%20%2F%20%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"
-                  icon: "material-symbols:model-training"
-                  description: "机器学习相关笔记"
-                - name: "线性代数"
-                  url: "/archive/?category=%E5%AD%A6%E4%B9%A0%20%2F%20%E7%BA%BF%E6%80%A7%E4%BB%A3%E6%95%B0"
-                  icon: "material-symbols:functions"
-                  description: "线性代数相关笔记"
         - # 一级导航链接 - 展览 (自定义)
             # 导航名称
             name: "Exhibition"
