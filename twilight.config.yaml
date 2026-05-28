@@ -194,6 +194,11 @@ navbar:
                     "Albums"
                 - # 二级导航链接 - 动画 (预设)
                     "Anime"
+                - # 二级导航链接 - PDF 资料库 (自定义)
+                    name: "PDF Library"
+                    url: "/pdfs/"
+                    icon: "material-symbols:picture-as-pdf"
+                    description: "Browse and download PDF files from one dedicated page"
         - # 一级导航链接 - 好友 (预设)
             "Friends"
         - # 一级导航链接 - 关于 (预设)

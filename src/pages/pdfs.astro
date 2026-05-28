@@ -1,0 +1,375 @@
+---
+export const prerender = true;
+
+import GridLayout from "@layouts/grid.astro";
+import BackwardButton from "@components/backwardButton.astro";
+import { formatDateI18n } from "@utils/date";
+import { formatPdfFileSize, getPdfItems } from "@utils/pdfs";
+
+const pdfItems = getPdfItems();
+const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
+---
+
+<GridLayout title="PDF 资料库" description="集中浏览和下载你的 PDF 文件">
+    <div
+        class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
+    >
+        <div class="card-base z-10 px-9 py-6 relative w-full">
+            <BackwardButton currentPath={Astro.url.pathname} />
+
+            <header class="pdf-page-header mb-8">
+                <div>
+                    <p class="pdf-page-kicker">PDF Library</p>
+                    <h1
+                        class="text-4xl font-bold text-black/90 dark:text-white/90 mb-2"
+                    >
+                        PDF 下载与浏览
+                    </h1>
+                    <p
+                        class="text-lg text-black/60 dark:text-white/60 max-w-3xl"
+                    >
+                        只要把 PDF 放进 public/pdfs
+                        目录，这个页面就会在构建时自动发现文件，并提供页内预览、下载和新标签页打开入口。
+                    </p>
+                </div>
+            </header>
+
+            <section class="pdf-stats-grid mb-8">
+                <div class="pdf-stat-card pdf-stat-card-blue">
+                    <div class="text-2xl font-bold">{pdfItems.length}</div>
+                    <div class="text-sm opacity-75">当前 PDF 数量</div>
+                </div>
+                <div class="pdf-stat-card pdf-stat-card-green">
+                    <div class="text-2xl font-bold">
+                        {formatPdfFileSize(totalSize)}
+                    </div>
+                    <div class="text-sm opacity-75">文件总大小</div>
+                </div>
+                <div class="pdf-stat-card pdf-stat-card-amber">
+                    <div class="text-2xl font-bold">public/pdfs</div>
+                    <div class="text-sm opacity-75">投放目录</div>
+                </div>
+            </section>
+
+            {
+                pdfItems.length === 0 ? (
+                    <section class="pdf-empty-state">
+                        <h2 class="text-2xl font-bold text-black/85 dark:text-white/85 mb-3">
+                            还没有可展示的 PDF
+                        </h2>
+                        <p class="text-black/65 dark:text-white/65 leading-7 mb-4">
+                            在项目目录下新建或打开 public/pdfs，然后把你的 PDF
+                            直接拖进去。下一次启动开发服务器或重新构建后，这个页面会自动列出这些文件。
+                        </p>
+                        <p class="text-sm text-black/50 dark:text-white/50">
+                            提示：中文文件名和包含空格的文件名都支持，但建议保持名称清晰，方便自动生成更可读的标题。
+                        </p>
+                    </section>
+                ) : (
+                    <section class="space-y-6">
+                        {pdfItems.map((item) => (
+                            <article class="pdf-card">
+                                <div class="pdf-card-top">
+                                    <div class="min-w-0">
+                                        <p class="pdf-filename">
+                                            {item.fileName}
+                                        </p>
+                                        <h2 class="pdf-title">{item.title}</h2>
+                                        <div class="pdf-meta-row">
+                                            <span>
+                                                {formatPdfFileSize(
+                                                    item.fileSize,
+                                                )}
+                                            </span>
+                                            <span>
+                                                更新于{" "}
+                                                {formatDateI18n(item.updatedAt)}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="pdf-actions">
+                                        <a
+                                            class="pdf-action-button"
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            新窗口打开
+                                        </a>
+                                        <a
+                                            class="pdf-action-button pdf-action-button-primary"
+                                            href={item.url}
+                                            download={item.fileName}
+                                        >
+                                            下载 PDF
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <details class="pdf-preview-panel">
+                                    <summary>
+                                        <span>页内预览</span>
+                                        <span class="pdf-preview-tip">
+                                            如果移动端无法内嵌显示，请使用“新窗口打开”
+                                        </span>
+                                    </summary>
+                                    <div class="pdf-preview-frame">
+                                        <iframe
+                                            src={item.url}
+                                            title={`${item.title} PDF preview`}
+                                            loading="lazy"
+                                        />
+                                    </div>
+                                </details>
+                            </article>
+                        ))}
+                    </section>
+                )
+            }
+        </div>
+    </div>
+</GridLayout>
+
+<style>
+    .pdf-page-kicker {
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        font-size: 0.82rem;
+        color: color-mix(in oklch, var(--primary), transparent 20%);
+        margin-bottom: 0.75rem;
+        font-weight: 700;
+    }
+
+    .pdf-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .pdf-stat-card {
+        border-radius: 1rem;
+        padding: 1rem 1.25rem;
+        border: 1px solid color-mix(in oklch, currentColor, transparent 85%);
+    }
+
+    .pdf-stat-card-blue {
+        color: #2563eb;
+        background: linear-gradient(
+            135deg,
+            rgba(219, 234, 254, 0.88),
+            rgba(191, 219, 254, 0.6)
+        );
+    }
+
+    .pdf-stat-card-green {
+        color: #059669;
+        background: linear-gradient(
+            135deg,
+            rgba(209, 250, 229, 0.88),
+            rgba(167, 243, 208, 0.62)
+        );
+    }
+
+    .pdf-stat-card-amber {
+        color: #d97706;
+        background: linear-gradient(
+            135deg,
+            rgba(254, 243, 199, 0.9),
+            rgba(253, 230, 138, 0.62)
+        );
+        overflow-wrap: anywhere;
+    }
+
+    :global(.dark) .pdf-stat-card-blue {
+        background: linear-gradient(
+            135deg,
+            rgba(30, 64, 175, 0.22),
+            rgba(37, 99, 235, 0.15)
+        );
+    }
+
+    :global(.dark) .pdf-stat-card-green {
+        background: linear-gradient(
+            135deg,
+            rgba(6, 95, 70, 0.24),
+            rgba(5, 150, 105, 0.15)
+        );
+    }
+
+    :global(.dark) .pdf-stat-card-amber {
+        background: linear-gradient(
+            135deg,
+            rgba(146, 64, 14, 0.28),
+            rgba(217, 119, 6, 0.15)
+        );
+    }
+
+    .pdf-empty-state,
+    .pdf-card {
+        border: 1px solid var(--line-divider);
+        border-radius: 1.25rem;
+        background: color-mix(in oklch, var(--card-bg), white 10%);
+        padding: 1.5rem;
+        box-shadow: 0 18px 50px rgba(15, 23, 42, 0.07);
+    }
+
+    .pdf-card-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 1.5rem;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+    }
+
+    .pdf-filename {
+        font-size: 0.92rem;
+        color: color-mix(in oklch, currentColor, transparent 45%);
+        margin-bottom: 0.35rem;
+        word-break: break-all;
+    }
+
+    .pdf-title {
+        font-size: 1.55rem;
+        line-height: 1.3;
+        font-weight: 800;
+        color: rgba(15, 23, 42, 0.92);
+        margin-bottom: 0.75rem;
+    }
+
+    :global(.dark) .pdf-title {
+        color: rgba(255, 255, 255, 0.92);
+    }
+
+    .pdf-meta-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.9rem;
+        color: rgba(15, 23, 42, 0.58);
+        font-size: 0.94rem;
+    }
+
+    :global(.dark) .pdf-meta-row {
+        color: rgba(255, 255, 255, 0.58);
+    }
+
+    .pdf-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+
+    .pdf-action-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.75rem;
+        padding: 0.7rem 1.15rem;
+        border-radius: 999px;
+        border: 1px solid color-mix(in oklch, var(--primary), transparent 78%);
+        color: var(--primary);
+        font-weight: 700;
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background-color 0.2s ease;
+        background: color-mix(in oklch, var(--primary), transparent 92%);
+    }
+
+    .pdf-action-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px
+            color-mix(in oklch, var(--primary), transparent 84%);
+    }
+
+    .pdf-action-button-primary {
+        color: white;
+        background: linear-gradient(
+            135deg,
+            color-mix(in oklch, var(--primary), white 8%),
+            color-mix(in oklch, var(--primary), black 12%)
+        );
+    }
+
+    .pdf-preview-panel {
+        border-top: 1px dashed
+            color-mix(in oklch, currentColor, transparent 85%);
+        padding-top: 1rem;
+    }
+
+    .pdf-preview-panel summary {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        color: rgba(15, 23, 42, 0.86);
+    }
+
+    .pdf-preview-panel summary::-webkit-details-marker {
+        display: none;
+    }
+
+    :global(.dark) .pdf-preview-panel summary {
+        color: rgba(255, 255, 255, 0.86);
+    }
+
+    .pdf-preview-tip {
+        font-weight: 500;
+        font-size: 0.86rem;
+        color: rgba(15, 23, 42, 0.55);
+    }
+
+    :global(.dark) .pdf-preview-tip {
+        color: rgba(255, 255, 255, 0.55);
+    }
+
+    .pdf-preview-frame {
+        margin-top: 1rem;
+        border-radius: 1rem;
+        overflow: hidden;
+        border: 1px solid color-mix(in oklch, currentColor, transparent 85%);
+        background: rgba(255, 255, 255, 0.72);
+    }
+
+    .pdf-preview-frame iframe {
+        width: 100%;
+        min-height: 42rem;
+        border: none;
+        background: white;
+    }
+
+    @media (min-width: 768px) {
+        .pdf-stats-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 768px) {
+        .pdf-card,
+        .pdf-empty-state {
+            padding: 1.15rem;
+        }
+
+        .pdf-card-top,
+        .pdf-preview-panel summary {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .pdf-actions {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .pdf-action-button {
+            width: 100%;
+        }
+
+        .pdf-preview-frame iframe {
+            min-height: 28rem;
+        }
+    }
+</style>
