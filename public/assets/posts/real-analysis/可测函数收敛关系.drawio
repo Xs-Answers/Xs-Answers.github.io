@@ -1,0 +1,121 @@
+<mxfile host="65bd71144e">
+    <diagram id="clean-convergence-relations" name="可测函数收敛关系">
+        <mxGraphModel dx="1279" dy="941" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="1" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="可测函数列的收敛关系" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=30;fontStyle=1;fontColor=#111827;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="130" width="580" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="uniform" value="一致收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;strokeWidth=2;fontSize=23;fontStyle=1;fontColor=#0c4a6e;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="200" width="150" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="pointwise" value="点态收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0284c7;strokeWidth=2;fontSize=23;fontStyle=1;fontColor=#0c4a6e;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="335" width="150" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="ae" value="a.e. 收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#dc2626;strokeWidth=2;fontSize=21;fontStyle=1;fontColor=#7f1d1d;" parent="1" vertex="1">
+                    <mxGeometry x="590" y="320" width="170" height="79" as="geometry"/>
+                </mxCell>
+                <mxCell id="measure" value="依测度收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#2563eb;strokeWidth=2;fontSize=23;fontStyle=1;fontColor=#1e3a8a;" parent="1" vertex="1">
+                    <mxGeometry x="870" y="320" width="175" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="subseq" value="存在 a.e. 收敛子列" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#16a34a;strokeWidth=2;fontSize=19;fontStyle=1;fontColor=#14532d;" parent="1" vertex="1">
+                    <mxGeometry x="855" y="200" width="210" height="64" as="geometry"/>
+                </mxCell>
+                <mxCell id="almost-uniform" value="&lt;b&gt;近似一致收敛&lt;/b&gt;∀δ&amp;gt;0，∃A⊂E&lt;br&gt;m(E\A)&amp;lt;δ且在 A 上一致收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e8ff;strokeColor=#9333ea;strokeWidth=2;fontSize=16;fontStyle=1;fontColor=#581c87;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="200" width="230" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="l1" value="L&lt;sup&gt;1&lt;/sup&gt; 收敛" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffedd5;strokeColor=#ea580c;strokeWidth=2;fontSize=22;fontStyle=1;fontColor=#7c2d12;" parent="1" vertex="1">
+                    <mxGeometry x="730" y="480" width="170" height="62" as="geometry"/>
+                </mxCell>
+                <mxCell id="lusin-title" value="Lusin 定理：可测函数的结构近似" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=21;fontStyle=1;fontColor=#581c87;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="510" width="350" height="34" as="geometry"/>
+                </mxCell>
+                <mxCell id="measurable" value="可测函数&lt;br/&gt;a.e. 有限" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#581c87;" parent="1" vertex="1">
+                    <mxGeometry x="350" y="555" width="150" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="continuous-large" value="大集合上连续&lt;br/&gt;f|F 连续" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#faf5ff;strokeColor=#9333ea;strokeWidth=2;fontSize=18;fontStyle=1;fontColor=#581c87;" parent="1" vertex="1">
+                    <mxGeometry x="610" y="555" width="170" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-uniform-pointwise" value="无需条件" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" parent="1" source="uniform" target="pointwise" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="260" y="350" as="sourcePoint"/>
+                        <mxPoint x="350" y="350" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-pointwise-ae" value="无需条件" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="500" y="350" as="sourcePoint"/>
+                        <mxPoint x="590" y="350" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-ae-measure" value="m(E)&lt;∞" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#2563eb;dashed=1;fontSize=14;fontStyle=1;fontColor=#1d4ed8;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" parent="1" source="ae" target="measure" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="359.33" as="sourcePoint"/>
+                        <mxPoint x="870" y="359.58" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="ae-to-measure-note" value="若 m(E)=∞，此结论不一定成立" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#60a5fa;strokeWidth=1;fontSize=13;fontStyle=1;fontColor=#1d4ed8;" vertex="1" parent="1">
+                    <mxGeometry x="775" y="290" width="80" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-measure-subseq" value="Riesz定理" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#16a34a;fontSize=13;fontStyle=1;fontColor=#166534;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" parent="1" source="measure" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="960" y="270" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-ae-egoroff" value="Egoroff, m(E)&lt;∞" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#9333ea;dashed=1;fontSize=14;fontStyle=1;fontColor=#6b21a8;" parent="1" source="ae" target="almost-uniform" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-ae-control" value="&lt;br&gt;Lebesgue控制收敛定理" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#ea580c;dashed=1;fontSize=14;fontStyle=1;fontColor=#9a3412;entryX=0;entryY=0;entryDx=0;entryDy=0;" parent="1" source="ae" target="l1" edge="1">
+                    <mxGeometry x="-0.294" y="-6" relative="1" as="geometry">
+                        <mxPoint x="675" y="504.9999999999998" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="e-l1-measure" value="Chebyshev直接得到：无需额外条件" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;exitX=1;exitY=0;exitDx=0;exitDy=0;" parent="1" source="l1" target="measure" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="e-measurable-continuous" value="Lusin, m(E)&lt;∞" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#9333ea;dashed=1;fontSize=13;fontStyle=1;fontColor=#6b21a8;" parent="1" source="measurable" target="continuous-large" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-2" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="pointwise" target="uniform">
+                    <mxGeometry x="0.0032" relative="1" as="geometry">
+                        <mxPoint x="260" y="380" as="sourcePoint"/>
+                        <mxPoint x="260" y="450" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-3" value="❌" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BVhRjDBI9i8qS0FB-ynF-2">
+                    <mxGeometry x="-0.1079" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-4" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1">
+                    <mxGeometry x="0.0032" relative="1" as="geometry">
+                        <mxPoint x="590" y="380" as="sourcePoint"/>
+                        <mxPoint x="500" y="380" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-5" value="❌" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BVhRjDBI9i8qS0FB-ynF-4">
+                    <mxGeometry x="-0.1079" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-10" value="" style="endArrow=block;html=1;rounded=0;strokeWidth=3;strokeColor=#111827;fontSize=13;fontColor=#111827;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="measure" target="ae">
+                    <mxGeometry x="0.0032" relative="1" as="geometry">
+                        <mxPoint x="875" y="370" as="sourcePoint"/>
+                        <mxPoint x="760" y="372.5" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BVhRjDBI9i8qS0FB-ynF-11" value="❌" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="BVhRjDBI9i8qS0FB-ynF-10">
+                    <mxGeometry x="-0.1079" y="-1" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
