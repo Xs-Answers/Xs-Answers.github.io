@@ -8,9 +8,11 @@ import { formatPdfFileSize, getPdfItems } from "@utils/pdfs";
 
 const pdfItems = getPdfItems();
 const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
+const pdfCount = pdfItems.filter((i) => i.fileType === "pdf").length;
+const htmlCount = pdfItems.filter((i) => i.fileType === "html").length;
 ---
 
-<GridLayout title="PDF 资料库" description="集中浏览和下载你的 PDF 文件">
+<GridLayout title="资料库" description="集中浏览和下载你的 PDF 与 HTML 文档">
     <div
         class="flex w-full rounded-(--radius-large) overflow-hidden relative min-h-32"
     >
@@ -19,17 +21,17 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
 
             <header class="pdf-page-header mb-8">
                 <div>
-                    <p class="pdf-page-kicker">PDF Library</p>
+                    <p class="pdf-page-kicker">Document Library</p>
                     <h1
                         class="text-4xl font-bold text-black/90 dark:text-white/90 mb-2"
                     >
-                        PDF 下载与浏览
+                        资料下载与浏览
                     </h1>
                     <p
                         class="text-lg text-black/60 dark:text-white/60 max-w-3xl"
                     >
-                        只要把 PDF 放进 public/pdfs
-                        目录，这个页面就会在构建时自动发现文件，并提供页内预览、下载和新标签页打开入口。
+                        把 PDF 放进 public/pdfs 或 HTML 放进 public/kaoyan
+                        目录，页面会在构建时自动发现文件，并提供页内预览、下载和新标签页打开入口。
                     </p>
                 </div>
             </header>
@@ -37,7 +39,9 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
             <section class="pdf-stats-grid mb-8">
                 <div class="pdf-stat-card pdf-stat-card-blue">
                     <div class="text-2xl font-bold">{pdfItems.length}</div>
-                    <div class="text-sm opacity-75">当前 PDF 数量</div>
+                    <div class="text-sm opacity-75">
+                        文档总数（PDF {pdfCount} · HTML {htmlCount}）
+                    </div>
                 </div>
                 <div class="pdf-stat-card pdf-stat-card-green">
                     <div class="text-2xl font-bold">
@@ -46,8 +50,8 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
                     <div class="text-sm opacity-75">文件总大小</div>
                 </div>
                 <div class="pdf-stat-card pdf-stat-card-amber">
-                    <div class="text-2xl font-bold">public/pdfs</div>
-                    <div class="text-sm opacity-75">投放目录</div>
+                    <div class="text-2xl font-bold">public/</div>
+                    <div class="text-sm opacity-75">pdfs · kaoyan 投放目录</div>
                 </div>
             </section>
 
@@ -55,11 +59,12 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
                 pdfItems.length === 0 ? (
                     <section class="pdf-empty-state">
                         <h2 class="text-2xl font-bold text-black/85 dark:text-white/85 mb-3">
-                            还没有可展示的 PDF
+                            还没有可展示的文档
                         </h2>
                         <p class="text-black/65 dark:text-white/65 leading-7 mb-4">
-                            在项目目录下新建或打开 public/pdfs，然后把你的 PDF
-                            直接拖进去。下一次启动开发服务器或重新构建后，这个页面会自动列出这些文件。
+                            在项目目录下将 PDF 放入 public/pdfs，或将 HTML 放入
+                            public/kaoyan
+                            。下一次构建后，这个页面会自动列出这些文件。
                         </p>
                         <p class="text-sm text-black/50 dark:text-white/50">
                             提示：中文文件名和包含空格的文件名都支持，但建议保持名称清晰，方便自动生成更可读的标题。
@@ -71,9 +76,20 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
                             <article class="pdf-card">
                                 <div class="pdf-card-top">
                                     <div class="min-w-0">
-                                        <p class="pdf-filename">
-                                            {item.fileName}
-                                        </p>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span
+                                                class={`file-type-badge ${
+                                                    item.fileType === "html"
+                                                        ? "file-type-badge-html"
+                                                        : "file-type-badge-pdf"
+                                                }`}
+                                            >
+                                                {item.fileType.toUpperCase()}
+                                            </span>
+                                            <p class="pdf-filename">
+                                                {item.fileName}
+                                            </p>
+                                        </div>
                                         <h2 class="pdf-title">{item.title}</h2>
                                         <div class="pdf-meta-row">
                                             <span>
@@ -101,7 +117,10 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
                                             href={item.url}
                                             download={item.fileName}
                                         >
-                                            下载 PDF
+                                            下载{" "}
+                                            {item.fileType === "html"
+                                                ? "HTML"
+                                                : "PDF"}
                                         </a>
                                     </div>
                                 </div>
@@ -110,13 +129,15 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
                                     <summary>
                                         <span>页内预览</span>
                                         <span class="pdf-preview-tip">
-                                            如果移动端无法内嵌显示，请使用“新窗口打开”
+                                            {item.fileType === "html"
+                                                ? "HTML 页面建议使用「新窗口打开」获得完整浏览体验"
+                                                : "如果移动端无法内嵌显示，请使用「新窗口打开」"}
                                         </span>
                                     </summary>
                                     <div class="pdf-preview-frame">
                                         <iframe
                                             src={item.url}
-                                            title={`${item.title} PDF preview`}
+                                            title={`${item.title} preview`}
                                             loading="lazy"
                                         />
                                     </div>
@@ -371,5 +392,37 @@ const totalSize = pdfItems.reduce((sum, item) => sum + item.fileSize, 0);
         .pdf-preview-frame iframe {
             min-height: 28rem;
         }
+    }
+
+    .file-type-badge {
+        display: inline-block;
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        padding: 0.18rem 0.55rem;
+        border-radius: 999px;
+        flex-shrink: 0;
+    }
+
+    .file-type-badge-pdf {
+        color: #dc2626;
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.25);
+    }
+
+    .file-type-badge-html {
+        color: #2563eb;
+        background: rgba(37, 99, 235, 0.1);
+        border: 1px solid rgba(37, 99, 235, 0.25);
+    }
+
+    :global(.dark) .file-type-badge-pdf {
+        background: rgba(220, 38, 38, 0.18);
+        border-color: rgba(220, 38, 38, 0.35);
+    }
+
+    :global(.dark) .file-type-badge-html {
+        background: rgba(37, 99, 235, 0.18);
+        border-color: rgba(37, 99, 235, 0.35);
     }
 </style>

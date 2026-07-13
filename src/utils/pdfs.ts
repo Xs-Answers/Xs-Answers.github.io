@@ -5,6 +5,8 @@ import { url } from "@utils/url";
 
 
 const PDF_DIRECTORY = join(process.cwd(), "public", "pdfs");
+const KAOYAN_DIRECTORY = join(process.cwd(), "public", "kaoyan");
+
 export interface PdfItem {
     id: string;
     fileName: string;
@@ -12,10 +14,12 @@ export interface PdfItem {
     url: string;
     fileSize: number;
     updatedAt: string;
+    fileType: "pdf" | "html";
 }
 
-function toReadableTitle(fileName: string) {
-    const nameWithoutExtension = fileName.replace(/\.pdf$/i, "");
+function toReadableTitle(fileName: string, extension: string) {
+    const escapedExt = extension.replace(/\./g, "\\.");
+    const nameWithoutExtension = fileName.replace(new RegExp(`\\.${escapedExt}$`, "i"), "");
 
     return nameWithoutExtension
         .replace(/[._-]+/g, " ")
@@ -41,27 +45,46 @@ export function formatPdfFileSize(size: number) {
     return `${nextSize.toFixed(digits)} ${units[unitIndex]}`;
 }
 
-export function getPdfItems(): PdfItem[] {
-    if (!existsSync(PDF_DIRECTORY)) {
+function scanDirectory(
+    dir: string,
+    extension: string,
+    urlPrefix: string,
+    fileType: "pdf" | "html",
+): PdfItem[] {
+    if (!existsSync(dir)) {
         return [];
     }
 
-    return readdirSync(PDF_DIRECTORY, { withFileTypes: true })
-        .filter((entry) => entry.isFile() && extname(entry.name).toLowerCase() === ".pdf")
+    return readdirSync(dir, { withFileTypes: true })
+        .filter(
+            (entry) =>
+                entry.isFile() &&
+                extname(entry.name).toLowerCase() === `.${extension}`,
+        )
         .map((entry) => {
-            const filePath = join(PDF_DIRECTORY, entry.name);
+            const filePath = join(dir, entry.name);
             const stats = statSync(filePath);
 
             return {
-                id: entry.name,
+                id: `${fileType}-${entry.name}`,
                 fileName: entry.name,
-                title: toReadableTitle(entry.name),
-                url: url(`/pdfs/${encodeURIComponent(entry.name)}`),
+                title: toReadableTitle(entry.name, extension),
+                url: url(`/${urlPrefix}/${encodeURIComponent(entry.name)}`),
                 fileSize: stats.size,
                 updatedAt: stats.mtime.toISOString(),
+                fileType,
             };
-        })
-        .sort((left, right) => {
-            return new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime();
         });
+}
+
+export function getPdfItems(): PdfItem[] {
+    const pdfs = scanDirectory(PDF_DIRECTORY, "pdf", "pdfs", "pdf");
+    const htmls = scanDirectory(KAOYAN_DIRECTORY, "html", "kaoyan", "html");
+
+    return [...pdfs, ...htmls].sort((left, right) => {
+        return (
+            new Date(right.updatedAt).getTime() -
+            new Date(left.updatedAt).getTime()
+        );
+    });
 }
